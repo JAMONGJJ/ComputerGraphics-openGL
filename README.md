@@ -2,7 +2,7 @@
 ## 실제 모델링한 오브젝트의 obj파일을 읽어와 3D 화면으로 렌더링하고 텍스쳐 매핑작업
 
 #### 사용 언어 : C, C++
-#### 작업 인원 : 1인 프로젝트(main, display함수 작성)
+#### 작업 인원 : 1인 프로젝트(Renderer.cpp의 main, display함수 작성)
 
 ## 작업 내용
 > ###### 3D Max로 모델링한 오브젝트를 obj 파일로 export해서 visual studio project에서 파일을 읽어와 3D 공간 상에 다시 렌더링(텍스처 매핑 포함)
@@ -89,3 +89,57 @@
 	display();
 
 ###### * display() : 실제 렌더링하는 함수
+	// 텍스처 매핑
+	glTexImage2D(GL_TEXTURE_2D, 0, 3, 255, 255, 0, GL_RGB, GL_UNSIGNED_BYTE, cart);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	...
+	
+	// 텍스처를 입힐 모델 생성
+	glEnable(GL_TEXTURE_2D);
+	glBegin(GL_TRIANGLES);
+	int vertex_1, vertex_2, vertex_3;
+	int normal_1, normal_2, normal_3;
+	float newNormal_X, newNormal_Y, newNormal_Z;
+	for (int i = 0; i < 32922; i++) {
+		vertex_1 = carf[i][0];		// 삼각형을 이루는 점들 중 첫번째 점의 인덱스
+		vertex_2 = carf[i][3];		// 삼각형을 이루는 점들 중 두번째 점의 인덱스
+		vertex_3 = carf[i][6];		// 삼각형을 이루는 점들 중 세번째 점의 인덱스
+
+		// 위에 인덱스를 가져온 3개의 점들을 가지고 삼각형 생성
+		// uv map의 좌표는 임의로 순서대로 (0, 0), (1, 0), (0, 1)로 설정
+		glTexCoord2f(0, 0);
+		glVertex3f(vertex[vertex_1 - 1].X - 0.1, vertex[vertex_1 - 1].Y, vertex[vertex_1 - 1].Z);			  
+		glTexCoord2f(1, 0);				  
+		glVertex3f(vertex[vertex_2 - 1].X - 0.1, vertex[vertex_2 - 1].Y, vertex[vertex_2 - 1].Z);
+		glTexCoord2f(0, 1);				  
+		glVertex3f(vertex[vertex_3 - 1].X - 0.1, vertex[vertex_3 - 1].Y, vertex[vertex_3 - 1].Z);
+	}
+	glDisable(GL_TEXTURE_2D);
+	glEnd();
+
+	//텍스처를 입히지 않는 모델 생성
+	glBegin(GL_TRIANGLES);
+	for (int i = 0; i < 32922; i++) {
+		vertex_1 = carf[i][0];	normal_1 = carf[i][2];	// 첫번째 점의 좌표와 노말벡터
+		vertex_2 = carf[i][3];	normal_2 = carf[i][5];	// 두번째 점의 좌표와 노말벡터
+		vertex_3 = carf[i][6];	normal_3 = carf[i][8];	// 세번째 점의 좌표와 노말벡터
+		
+		// 세 점의 노말벡터의 x, y, z 방향의 평균을 각각 계산, 새로운 노말벡터 (newNormal_X, newNormal_Y, newNormal_Z) 생성
+		newNormal_X = (carvn[normal_1 - 1].X + carvn[normal_2 - 1].X + carvn[normal_3 - 1].X) / 3;
+		newNormal_Y = (carvn[normal_1 - 1].Y + carvn[normal_2 - 1].Y + carvn[normal_3 - 1].Y) / 3;
+		newNormal_Z = (carvn[normal_1 - 1].Z + carvn[normal_2 - 1].Z + carvn[normal_3 - 1].Z) / 3;
+		
+		glNormal3f(newNormal_X, newNormal_Y, newNormal_Z);
+		glColor3f(1.0, 1.0, 1.0);
+		glVertex3f(vertex[vertex_1 - 1].X + 0.1, vertex[vertex_1 - 1].Y, vertex[vertex_1 - 1].Z);
+		glColor3f(1.0, 1.0, 1.0);
+		glVertex3f(vertex[vertex_2 - 1].X + 0.1, vertex[vertex_2 - 1].Y, vertex[vertex_2 - 1].Z);
+		glColor3f(1.0, 1.0, 1.0);
+		glVertex3f(vertex[vertex_3 - 1].X + 0.1, vertex[vertex_3 - 1].Y, vertex[vertex_3 - 1].Z);
+	}
+
+
