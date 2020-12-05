@@ -146,3 +146,7 @@
 ![Rendering](https://user-images.githubusercontent.com/75113789/101245493-a334f400-3750-11eb-8be6-56890f5ec8b3.PNG)
 > ###### 렌더링된 이미지
 > ###### 마우스클릭, 휠을 이용해 카메라 뷰 조절 가능
+
+---------
+## 실행 방법
+> ###### FinalTerm에 있는 파일들을 "Kinect_Sample_Re"폴더로 옮기고 비주얼 스튜디오 솔루션 실행 후 빌드
