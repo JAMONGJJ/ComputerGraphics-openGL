@@ -7,7 +7,7 @@
 ## 작업 내용
 > ###### 3D Max로 모델링한 오브젝트를 obj 파일로 export해서 visual studio project에서 파일을 읽어와 3D 공간 상에 다시 렌더링(텍스처 매핑 포함)
 
-###### main() : 렌더링하는데에 필요한 버텍스 정보와 텍스처 이미지 불러오기
+###### * main() : 렌더링하는데에 필요한 버텍스 정보와 텍스처 이미지 불러오기
 	vertex = new Vertex[16453];
 	carvn = new Vertex[16613];
 
@@ -87,3 +87,5 @@
 	InitializeWindow(argc, argv);
 
 	display();
+
+###### * display() : 실제 렌더링하는 함수
