@@ -142,6 +142,7 @@
 		glVertex3f(vertex[vertex_3 - 1].X + 0.1, vertex[vertex_3 - 1].Y, vertex[vertex_3 - 1].Z);
 	}
 
+----------------
 ![Rendering](https://user-images.githubusercontent.com/75113789/101245493-a334f400-3750-11eb-8be6-56890f5ec8b3.PNG)
 > ###### 렌더링된 이미지
 > ###### 마우스클릭, 휠을 이용해 카메라 뷰 조절 가능
